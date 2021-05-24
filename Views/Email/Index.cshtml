@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Wiadomości";
+
+}
+
+@model EmailModel
+
+<body>
+    <form asp-controller="Email" asp-action="Send" method="POST" enctype="multipart/form-data">
+        <fieldset>
+
+            <legend>Wyślij Email</legend>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="control-label">Wykładowca: </label> <br />
+                <select asp-for="SupervisorID"
+                        asp-items="@(new SelectList(ViewBag.Supervisors,"Id","FullName"))" class="form-control">
+                    <option id="-1">Wybierz wykładowcę</option>
+                </select>
+                <span asp-validation-for="SupervisorID" class="text-danger" ></span>
+            </div>
+
+            <div class="eTitle">
+                <label class="control-label">Tytuł maila: </label><br />
+                <input asp-for="Title" value="Dokumenty - Praca dyplomowa." type="text" class="form-control" />
+                <span asp-validation-for="Title"></span>
+            </div><br />
+
+            <div class="eBody">
+                <label class="control-label">Treść maila:</label><br />
+                <textarea id="@Html.IdFor(m => m.MailText)"
+                          name="@Html.NameFor(m => m.MailText)" class="form-control">Proszę o przesłanie...</textarea>
+                <span asp-validation-for="MailText"></span>
+            </div><br />
+
+            <div class="input-group">
+                <div class="custom-file">
+                    <input class="custom-file-input" type="file" asp-for="Files" multiple />
+                    <label for="Files" class="custom-file-label">Wybierz pliki</label>
+                </div>
+            </div>
+            <br />
+
+            <input type="submit" name="send" value="Wyślij" class="form-control btn btn-primary" />
+
+        </fieldset>
+    </form>
+</body>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+// Add the following code if you want the name of the file appear on select
+$(".custom-file-input").on("change", function() {
+    console.log($(this).val());
+    var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").html(fileName);
+});
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

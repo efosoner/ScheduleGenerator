@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Generator";
+}
+
+<head>
+
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("button", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("button");
+            if ($(ev.target).hasClass("card-body")) {
+                var target = ev.target;
+                target.appendChild(document.getElementById(data));
+            }
+            else {
+                var target = $(ev.target).closest("div");
+                target.append(document.getElementById(data));
+            }
+            console.log(target);
+
+        }
+    </script>
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Studenci
+                    <form class="form-inline d-flex">
+                        <div class="form-group mb-2 flex-grow-1 d-flex mr-2">
+                            <label for="inputPassword2" class="sr-only">Wyszukaj</label>
+                            <input type="text" class="form-control flex-grow-1" id="inputPassword2" placeholder="np. Jan Kowalski">
+                        </div>
+                        <button type="submit" class="btn btn-primary flex-grow-1 mb-2">Wyszukaj</button>
+                    </form>
+                </div>
+                <div id="c0" class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    Harmonogram
+                    <form class="form-inline d-flex">
+                        <div class="form-group mb-2 flex-grow-1 d-flex">
+                            <select id="asp-for" class="form-control flex-grow-1">
+                                <option>Wybierz prowadzącego</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div id="c1" class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <button id="1" type="button" class="btn btn-primary btn-block" draggable="true" ondragover="false" ondragstart="drag(event)">Primary</button>
+                    <button id="2" type="button" class="btn btn-primary btn-block" draggable="true" ondragstart="drag(event)">Primary</button>
+                    <button id="3" type="button" class="btn btn-primary btn-block" draggable="true" ondragstart="drag(event)">Primary</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Strona Startowa";
+}
+
+<div>
+    <video autoplay muted loop id="backgroundVideo" class="img-fluid">
+        <source src="~/background/Pexel.mp4" type="video/mp4" />
+    </video>
+</div>
+
+<style>
+    #backgroundVideo {
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: -1;
+    }
+</style>

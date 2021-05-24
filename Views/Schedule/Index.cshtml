@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Harmonogram";
+}
+
+@model FileUploadModel
+
+<body>
+    <form asp-controller="Schedule" asp-action="LoadXLSX" method="POST" enctype="multipart/form-data">
+        <legend>Dane</legend>
+        <div class="input-group">
+            <div class="custom-file">
+                <input class="custom-file-input" asp-for="File" type="file" />
+                <label for="File" class="custom-file-label">Wybierz plik</label>
+            </div>
+        </div> <br />
+        <input type="submit" name="send" value="Załaduj dane" class="form-control btn btn-primary" />
+        <span asp-validation-for="File" class="text-danger"></span>
+    </form> <br />
+
+    <div class="d-flex">
+        <a asp-controller="Email" asp-action="Index" class="btn btn-primary flex-grow-1">Edytuj dane</a>
+        <label style="width: 20px"></label>
+        <button type="button" class="btn btn-danger flex-grow-1" data-toggle="modal" data-target="#Modal">
+            Wyczyść dane
+        </button>  
+
+        <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Czy napewno chcesz to zrobić?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Spowoduje to permanetne usunięcie wszystkich, znajdujących się w bazie informacji dotyczących studentów. Czy na pewno chcesz wykonać tę akcję?
+                    </div>
+                    <form asp-controller="Schedule" asp-action="ClearDataset" method="POST">
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-danger" value="Wyczyść dane"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+        </div>
+
+    </div>
+
+    <br />
+    <legend>Harmonogram</legend>
+
+    <a asp-controller="Schedule" asp-action="ScheduleGenerator" class="form-control btn btn-primary">Generuj Harmonogram</a> <br />
+</body>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        console.log($(this).val());
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").html(fileName);
+    });
+</script>
